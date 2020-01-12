@@ -1,7 +1,13 @@
 # Redux lesson with redux-thunk
 
 ## Step 1
-#####  1.1 Install dependencies
+Goals of this step:
+* Set up a basic React app
+* Install dependencies
+* Replace boilerplate from create-react-app
+* Set up bare minimum for a viable react-redux app
+
+####  1.1 Install dependencies
 `npm i redux react-redux axios redux-thunk`
  - [x] redux: The redux library. 
  - [x] react-redux: Integration layer between react and redux.
@@ -10,7 +16,7 @@
 
  Now that our dependencies are installed we can set up the rest of the app. 
 
-#####  1.1 Index.js
+####  1.1 Index.js
 
 ```
 import React from 'react' // Mandatory import for a react file
@@ -34,7 +40,7 @@ Extra notes:
 * createStore: The createStore function is imported from redux. We pass it the reducers and it returns back the redux store
 * provider: The <Provider> must be passed the store. The store is created via createStore(reducers) The new parent component of App. ie it wraps App. App will now have access to the global state
 
-#####  1.2 App.js
+####  1.2 App.js
 
 Create a directory in src called `components` 
 Create a file called `App.js` inside of `src/components`
@@ -58,7 +64,7 @@ Extra notes:
 
 * remember that all classNames are coming from an external stylesheet
 
-#####  1.2 Reducers
+####  1.2 Reducers
 
 Create a directory in src called `reducers` inside the src directory
 Creare a file called `index.js` inside `src/reducers/index.js`
