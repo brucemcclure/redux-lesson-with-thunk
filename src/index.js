@@ -1,12 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react' // Mandatory import for a react file
+import ReactDOM from 'react-dom' // Need this to help render app
+import { Provider } from 'react-redux' // The new "parent component of the app"
+import { createStore } from 'redux' // Function to create the global state 'store' NB must pass it reducers
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from './components/App' // The "App"
+import reducers from './reducers' // The reducers which will be passed to the createStore function
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(
+  <Provider store={createStore(reducers)}>
+    <App />
+  </Provider>,
+  document.querySelector('#root')
+)
+
+// Extra Notes
+
+/*
+createStore
+The createStore function is imported from redux.
+We pass it the reducers and it returns back the redux store
+*/
+
+/*
+provider
+The <Provider> must be passed the store.
+The store is created via createStore(reducers)
+The new parent component of App. ie it wraps App
+App will now have access to the global state
+*/
