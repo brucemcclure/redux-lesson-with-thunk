@@ -1,11 +1,16 @@
 # Redux lesson with redux-thunk
 
+This is a basic lesson on redux and redux-thunk. 
+Most aspects of React will not be explained for brevity's sake
+No Styling will be addressed at all
+
 ## Step 1
 Goals of this step:
 * Set up a basic React app
 * Install dependencies
 * Replace boilerplate from create-react-app
 * Set up bare minimum for a viable react-redux app
+* Hook up the semantic UI stylesheet
 
 ####  1.1 Install dependencies
 `npm i redux react-redux axios redux-thunk`
@@ -64,7 +69,7 @@ Extra notes:
 
 * remember that all classNames are coming from an external stylesheet
 
-####  1.2 Reducers
+####  1.3 Reducers
 
 Create a directory in src called `reducers` inside the src directory
 Creare a file called `index.js` inside `src/reducers/index.js`
@@ -85,3 +90,7 @@ Extra notes:
 * combineReducers: Function to combine all the reducers which will be later used to make the store
 * The keys of the object inside combineReducers are going to be the keys that show up in the global state object.
 * Currently there is dummy data in it to get an error message to not display in the console
+
+####  1.4 Stylesheet
+
+* Add `<Link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />` to the head of `public/index.html`
