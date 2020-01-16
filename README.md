@@ -4,6 +4,16 @@ This is a basic lesson on redux and redux-thunk.
 Most aspects of React will not be explained for brevity's sake
 No Styling will be addressed at all
 
+## Recap on The Redux Cycle
+
+![Redux-thunk && Axios](docs/images/redux-cycle.png)
+
+## Redux cycle with redux-thunk
+* NB: Notice that dispatch now passes the action to middleware (thunk) before the reducers.
+* This middleware relaxes the rules around action creators
+
+![Redux-thunk && Axios](docs/images/redux-cycle-with-thunk.png)
+
 ## Step 1: Setting up a react-redux app
 Goals of this step:
 * Set up a basic React app
@@ -289,4 +299,108 @@ export default App
 
 ```
 
-## Step 3: 
+## Step 3: Reducers, State, Mutation and more
+
+#### 3.0 Reducers
+
+background info: 
+  * When redux first boots up it runs reducers one time. 
+
+![Rules of reducers](docs/images/rules-of-reducers.png)
+
+1. Return any value besides undefined, otherwise it **will** error. (Default 1st arg as null)
+2. Only has access to the previous state and the action. 
+    * ie there is a cyclic action where the reducer is constantly called with its previous return value
+    * Only the action changes
+3. Reducers must **not** reach outside of itself to return state
+  ![Rules of reducers](docs/images/pure-reducers.png)
+4. DO NOT MUTATE STATE
+    * It wont error... So just dont do it
+    * When js checks to see if there is a difference between the old state and the new state it does not look at the actual contents of the arr/obj
+    * Instead it looks at the point in memory (which are equal)
+    * Remember a component will re-render if its state changes. 
+    * So if a component's state is mutated it will never rerender
+
+
+#### 3.1 State and how to update it safely
+As previously discussed we dont want to mutate state **but** we need to change it somehow. 
+This is how we will change state from now onwards.
+
+![Rules of reducers](docs/images/state-and-how-to-update-it-safely.png)
+
+#### 3.2 Switch statements in reducers
+It is common to see a switch statement inside of a reducer instead of an if statement. 
+Although in this case is is not necessary. 
+```
+export default (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_POSTS':
+      return action.payload
+    default:
+      return state
+  }
+}
+
+```
+
+#### 3.3 PostList component: Finally getting data into the component
+Remember: 
+  * Anytime we want to get some data from the redux side of the application into the react side we must define the `mapStateToProps()` function and pass it off to connect. 
+  * every time the reducer runs `mapStateToProps()` also runs. 
+    ```
+    const mapStateToProps = state => {
+    return { posts: state.posts }
+    }
+
+    export default connect(mapStateToProps, { fetchPosts })(PostList)
+    ```
+
+  * Build a custom renderList() method to render out the jsx. 
+    ```
+    renderList () {
+    return this.props.posts.map(post => {
+      return (
+        <div className='item' key={post.id}>
+          <i className='large middle aligned icon user' />
+          <div className='content'>
+            <div className='description'>
+              <h2>
+                {post.title}
+              </h2>
+              <p>
+                {post.body}
+              </p>
+            </div>
+          </div>
+        </div>
+      )
+    })
+    }
+    ```
+
+#### 3.4 Advanced data fetching (multiple axios calls)
+
+* Each element in PostList must display it's author. 
+* Because of the way the end points are set up, the posts do not have the author names attached to them.
+* Instead they have the author ID.
+* Therefore the data flow will be to pass the id to the UserHeader component.
+* The UserHeader component then makes the api call to fetch its specific author.
+* Data flow as below
+
+![Advanced data fetching](docs/images/advanced-data-fetching.png)
+
+
+Here is an overview of the action creators needed to achieve this: 
+
+![Action creators need for this](docs/images/action-creators-needed.png)
+
+Example of the action creator which will meet the requirements
+
+```
+// the id needs to be passed in
+export const fetchUser = id => async dispatch => {
+  const response = await jsonPlaceholder.get(`/users/${id}`)
+  dispatch({ type: 'FETCH_USER', payload: response.data })
+}
+```
+
